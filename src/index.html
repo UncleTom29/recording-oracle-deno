@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escrow Fortunes</title>
+  </head>
+  <body>
+    <h1>Escrow Fortunes</h1>
+    <form id="form">
+      <label for="workerAddress">Worker Address:</label><br />
+      <input type="text" id="workerAddress" name="workerAddress" /><br />
+      <label for="escrowAddress">Escrow Address:</label><br />
+      <input type="text" id="escrowAddress" name="escrowAddress" /><br />
+      <label for="fortune">Fortune:</label><br />
+      <textarea id="fortune" name="fortune"></textarea><br />
+      <button type="submit">Submit Fortune</button>
+    </form>
+    <h2>Submitted Fortunes</h2>
+    <ul id="fortunes"></ul>
+    <script>
+      const form = document.getElementById("form");
+      const fortunesList = document.getElementById("fortunes");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const workerAddress = form.workerAddress.value;
+        const escrowAddress = form.escrowAddress.value;
+        const fortune = form.fortune.value;
+
+        const response = await fetch("/job/results", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ workerAddress, escrowAddress, fortune }),
+        });
+
+        if (response.status === 201) {
+          const li = document.createElement("li");
+          li.innerText = fortune;
+          fortunesList.appendChild(li);
+        }
+      });
+    </script>
+  </body>
+</html>
