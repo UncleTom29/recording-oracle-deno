@@ -15,6 +15,7 @@ jobs:
           deno-version: 1.4.2
 
       - name: Install dependencies
+        continue-on-error: true
         run: deno cache src/server.ts src/storage.ts
 
       - name: Test
