@@ -24,6 +24,7 @@ jobs:
 
       - name: Build
         continue-on-error: true
+        run: deno cache clear
         run: deno run --allow-all src/server.ts src/storage.ts
         
       - name: Deploy to Vercel Action
