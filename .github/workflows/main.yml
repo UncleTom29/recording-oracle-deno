@@ -35,6 +35,15 @@ jobs:
       - name: Build
         continue-on-error: true
         run: deno run --allow-all src/server.ts src/storage.ts
+
+      - name: Check if Vercel CLI is installed
+        run: vercel --version
+
+      - name: Check if Vercel CLI is configured
+        run: vercel whoami
+        
+      - name: Log in to Vercel
+        run: vercel login
         
       - name: Deploy to Vercel Action
         continue-on-error: true
