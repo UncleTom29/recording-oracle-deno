@@ -26,8 +26,10 @@ jobs:
         continue-on-error: true
         run: deno build src/server.ts src/storage.ts
         
-      - name: Deploy to Vercel
-        continue-on-error: true
-        uses: vercel/actions/vercel@v1
+      - name: Deploy to Vercel Action
+        uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
-          args: deploy --prod
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
