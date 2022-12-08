@@ -14,6 +14,16 @@ jobs:
         with:
           deno-version: 1.4.2
 
+      - name: Install npm dependencies
+        uses: actions/npm@v2
+        with:
+          args: install
+
+      - name: Add Google Cloud Storage to package.json
+        run: |
+          npm install --save @google-cloud/storage
+          cat package.json
+
       - name: Install dependencies
         continue-on-error: true
         run: deno cache src/server.ts src/storage.ts

@@ -1,4 +1,4 @@
-import { Bucket } from "https://deno.land/x/google_cloud_storage/mod.ts";
+import { Bucket } from '@google-cloud/storage';
 
 const bucket = new Bucket("tomiwa-adeyemi");
 
