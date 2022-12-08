@@ -40,7 +40,7 @@ jobs:
         run: vercel --version
  
       - name: Log in to Vercel
-        run: vercel login --token W3oLUhxlcxlvkQAGB83Ao6uS
+        run: vercel login --token ${{ secrets.VERCEL_TOKEN }}
         
       - name: Deploy to Vercel Action
         continue-on-error: true
