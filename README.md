@@ -174,7 +174,7 @@ We then create an instance of the Escrow contract using the ABI and the address 
               "The Escrow Recording Oracle address mismatches the current one",
           };
       }
-     ```
+```
 
 
 Next, we check the status of the Escrow contract and ensure it is in the Pending state. If it is not in the Pending state, we return a 400 Bad Request response with an error message.
@@ -193,8 +193,7 @@ Next, we check the status of the Escrow contract and ensure it is in the Pending
 
 Then, we retrieve the manifestUrl and the reputationOracleUrl from the Escrow contract and make a GET request to the manifestUrl to retrieve the fortunes_requested and the reputation_oracle_url values.
 
-```
-      const manifestUrl = await Escrow.methods.manifestUrl()
+```      const manifestUrl = await Escrow.methods.manifestUrl()
         .call({ from: account.address });
       const manifestResponse = await axios.get(convertUrl(manifestUrl));
       const {
@@ -205,8 +204,8 @@ Then, we retrieve the manifestUrl and the reputationOracleUrl from the Escrow co
 
 Next, we check if the storage module has a record of the Escrow contract address. If not, we add it to the storage.
 
-```
-      if (!storage.getEscrow(escrowAddress)) {
+```      
+    if (!storage.getEscrow(escrowAddress)) {
         storage.newEscrow(escrowAddress);
       }
 ```
