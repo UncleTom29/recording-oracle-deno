@@ -25,3 +25,9 @@ jobs:
       - name: Build
         continue-on-error: true
         run: deno build src/server.ts src/storage.ts
+        
+      - name: Deploy to Vercel
+        continue-on-error: true
+        uses: vercel/actions/vercel@v1
+        with:
+          args: deploy --prod
