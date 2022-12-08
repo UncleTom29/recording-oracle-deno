@@ -1,9 +1,7 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "src/**/*.ts",
-      "use": "@vercel/deno"
+    "functions": {
+      "src/**/*.[jt]s": {
+        "runtime": "vercel-deno@2.0.2"
+      }
     }
-  ]
-}
+  }
