@@ -1,0 +1,24 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Deno
+        uses: denolib/setup-deno@v1
+        with:
+          deno-version: 1.4.2
+
+      - name: Install dependencies
+        run: deno cache src/server.ts src/storage.ts
+
+      - name: Test
+        run: deno test --allow-net
+
+      - name: Build
+        run: deno build src/server.ts src/storage.ts
