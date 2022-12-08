@@ -20,7 +20,7 @@ deno run --allow-net --allow-env mod.ts
 
 The directory tree for this Deno app are as follows:
 
-``
+```
 .
 ├── .vercelignore
 ├── README.md
@@ -37,7 +37,7 @@ The directory tree for this Deno app are as follows:
 │   └── storage.test.ts
 ├── vercel.json
 └── .env
-``
+```
 
 This directory tree includes the following directories and files:
 
@@ -84,48 +84,61 @@ Here is a more detailed expression of the code structure:
 
 First, we import the necessary modules from the Deno standard library and third-party libraries.
 
-``
+```
 import { Application, Router } from "https://deno.land/x/oak@v5.2.0/mod.ts";
+
 import { bodyParser } from "https://deno.land/x/oak@v5.2.0/mod.ts";
+
 import { cors } from "https://deno.land/x/cors@v1.0.1/mod.ts";
+
 import { EscrowABI } from "./contracts/EscrowAbi.json";
+
 import { convertUrl } from "./utils.ts";
+
 import { statusesMap } from "./constants.ts";
-``
+```
 
 Next, we set some environment variables for the private key, the HTTP server, and the port number. We also create an instance of the Application class from the oak module and an instance of the Router class.
 
-``
+```
 const privKey = Deno.env.get("ETH_PRIVATE_KEY") || "486a0621e595dd7fcbe5608cbbeec8f5a8b5cabe7637f11eccfc7acd408c3a0e";
+
 const ethHttpServer = Deno.env.get("ETH_HTTP_SERVER") || "http://localhost:8547";
+
 const port = Number(Deno.env.get("PORT")) || 3005;
+
 const app = new Application();
+
 const router = new Router();
-``
+```
 
 Then, we create a new Web3 instance and add the private key to the wallet. We set the default account to the address of the private key.
 
-``
+```
+
 const web3 = new Web3(ethHttpServer);
+
 const account = web3.eth.accounts.privateKeyToAccount(`0x${privKey}`);
+
 web3.eth.accounts.wallet.add(account);
+
 web3.eth.defaultAccount = account.address;
-``
+```
 
 After that, we define the route for the /job/results endpoint. This endpoint accepts a POST request with a JSON body containing the worker address, the escrow address, and the fortune.
 
-``
+```
 router.post(
   "/job/results",
   bodyParser({ limit: "1mb" }),
   async (context: any) => {
     try {
       const { workerAddress, escrowAddress, fortune } = context.request.body;
-``
+```
 
 Next, we validate the worker address and the escrow address to ensure they are valid Ethereum addresses. If either of them is not a valid Ethereum address, we return a 400 Bad Request response with a relevant error message.
 
-``
+```
       if (!web3.utils.isAddress(workerAddress)) {
         return context.response.status = 400,
           context.response.body = {
@@ -140,12 +153,12 @@ Next, we validate the worker address and the escrow address to ensure they are v
             message: "Valid ethereum address required",
           };
       }
-``
+```
 
 
 We then create an instance of the Escrow contract using the ABI and the address provided in the request. We also retrieve the recordingOracle address of the Escrow contract and compare it with the current account address. If they do not match, we return a 400 Bad Request response with an error message.
 
-``
+```
       const Escrow = new web3.eth.Contract(EscrowABI, escrowAddress);
       const escrowRecOracleAddr = await Escrow.methods
         .recordingOracle()
@@ -161,12 +174,12 @@ We then create an instance of the Escrow contract using the ABI and the address 
               "The Escrow Recording Oracle address mismatches the current one",
           };
       }
-     ``
+     ```
 
 
 Next, we check the status of the Escrow contract and ensure it is in the Pending state. If it is not in the Pending state, we return a 400 Bad Request response with an error message.
 
-``
+```
       const escrowStatus = await Escrow.methods.status()
         .call({ from: account.address });
       if (statusesMap[escrowStatus] !== "Pending") {
@@ -176,11 +189,11 @@ Next, we check the status of the Escrow contract and ensure it is in the Pending
             message: "The Escrow is not in the Pending status",
           };
       }
-``
+```
 
 Then, we retrieve the manifestUrl and the reputationOracleUrl from the Escrow contract and make a GET request to the manifestUrl to retrieve the fortunes_requested and the reputation_oracle_url values.
 
-``
+```
       const manifestUrl = await Escrow.methods.manifestUrl()
         .call({ from: account.address });
       const manifestResponse = await axios.get(convertUrl(manifestUrl));
@@ -188,19 +201,19 @@ Then, we retrieve the manifestUrl and the reputationOracleUrl from the Escrow co
         fortunes_requested: fortunesRequested,
         reputation_oracle_url: reputationOracleUrl,
       } = manifestResponse.data;
-``
+```
 
 Next, we check if the storage module has a record of the Escrow contract address. If not, we add it to the storage.
 
-``
+```
       if (!storage.getEscrow(escrowAddress)) {
         storage.newEscrow(escrowAddress);
       }
-``
+```
 
 We then check if the worker has already submitted a fortune for the Escrow contract. If they have, we return a 400 Bad Request response with an error message.
 
-``
+```
       const workerPreviousResult = storage.getWorkerResult(
         escrowAddress,
         workerAddress,
@@ -211,11 +224,11 @@ We then check if the worker has already submitted a fortune for the Escrow contr
             message: `${workerAddress} already submitted a fortune`,
           };
       }
-``      
+```     
 
 After that, we add the fortune to the storage and check if the number of fortunes in the storage matches the fortunes_requested value. If they do, we make a POST request to the reputationOracleUrl with the escrowAddress and the list of fortunes. Then, we clear the fortunes from the storage.
 
-``
+```
 storage.putFortune(escrowAddress, workerAddress, fortune);
 const fortunes = storage.getFortunes(escrowAddress);
 if (fortunes.length === fortunesRequested) {
@@ -228,18 +241,18 @@ if (fortunes.length === fortunesRequested) {
   });
   storage.cleanFortunes(escrowAddress);
 }
-``
+```
 
 Finally, we return a 201 Created response to indicate that the fortune has been added successfully.
 
-``
+```
 context.response.status = 201;
 context.response.body = "";
-``
+```
 
 If an error occurs at any point in the process, we catch it and return a 500 Internal Server Error response with the error message.
 
-``
+```
 } catch (err) {
   console.error(err);
   context.response.status = 500;
@@ -247,17 +260,17 @@ If an error occurs at any point in the process, we catch it and return a 500 Int
     message: err.message,
   };
 }
-``
+```
 
 After defining the route, we apply the cors middleware and register the route with the Application instance. We then log a message to the console and start the server.
 
-``
+```
 app.use(cors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 console.log(`Listening on port ${port}...`);
 await app.listen({ port });
-``
+```
 
 ### CI/CD 
 
