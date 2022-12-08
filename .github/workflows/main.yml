@@ -28,6 +28,8 @@ jobs:
         
       - name: Deploy to Vercel Action
         continue-on-error: true
+        run: deno install --unstable --allow-read --allow-write --allow-env --allow-run https://deno.land/x/vercel/mod.ts
+
         uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
