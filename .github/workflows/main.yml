@@ -24,7 +24,7 @@ jobs:
 
       - name: Build
         continue-on-error: true
-        run: deno build src/server.ts src/storage.ts
+        run: deno run --allow-all src/server.ts src/storage.ts
         
       - name: Deploy to Vercel Action
         continue-on-error: true
@@ -32,5 +32,5 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: W3oLUhxlcxlvkQAGB83Ao6uS
-          VERCEL_ORG_ID: TvUd5JRLSOKGs7nK2GUAA7U
-          VERCEL_PROJECT_ID: prj_g9l7TcdWkt9ns9oxTMDlH44L0s2Y
+          VERCEL_ORG_ID: 1TvUd5JRLSOKGs7nK2GUAA7U
+          VERCEL_PROJECT_ID: prj_qsJo4ZVZ4SXOzBepuMBUQEkHlwob
