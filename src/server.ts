@@ -1,6 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@v5.2.0/mod.ts";
 import { bodyParser } from "https://deno.land/x/oak@v5.2.0/mod.ts";
-import { cors } from "https://deno.land/x/cors@v1.0.1/mod.ts";
+import { cors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { EscrowABI } from "./contracts/EscrowAbi.json";
 import { convertUrl } from "./utils.ts";
 import { statusesMap } from "./constants.ts";
