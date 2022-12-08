@@ -38,10 +38,7 @@ jobs:
 
       - name: Check if Vercel CLI is installed
         run: vercel --version
-
-      - name: Check if Vercel CLI is configured
-        run: vercel whoami
-        
+ 
       - name: Log in to Vercel
         run: vercel login
         
