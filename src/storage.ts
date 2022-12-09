@@ -1,6 +1,7 @@
-import { Bucket } from '@google-cloud/storage';
+import { Storage } from "https://googleapis.deno.dev/v1/storage:v1.ts";
 
-const bucket = new Bucket("tomiwa-adeyemi");
+const bucket = new Storage("tomiwa-adeyemi");
+
 
 export function getEscrow(escrowAddress: string) {
   const file = bucket.file(`escrows/${escrowAddress}.json`);
