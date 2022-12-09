@@ -1,4 +1,4 @@
-## Deno Recording Oracle  
+## Human Protocol Recording Oracle with Deno 
 
 An Ethereum Oracle which records the task output and who does what. In this case, the Recording Oracle will receive responses from the Exchange Oracle. The Exchange Oracle passes the responses to the Recording Oracle, which the check the quality of the answers.
 
@@ -7,8 +7,7 @@ This Recording Oracle is implemented using Deno.
 
 This is a simple API that accepts a POST request with a JSON body containing the worker address, the escrow address, and the fortune. It validates the worker address and the escrow address, retrieves some data from the Escrow contract, adds the fortune to the storage, and returns a 201 Created response.
 
-Check the video demo here: <video src="https://youtu.be/9UbEiK9QG6M" width="480" height="320" controls></video>
-
+Check the video demo here: https://youtu.be/9UbEiK9QG6M
 
 ### Usage
 
